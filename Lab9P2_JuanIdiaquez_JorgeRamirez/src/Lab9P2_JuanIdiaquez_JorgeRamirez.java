@@ -1,21 +1,27 @@
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author juanf
  */
 public class Lab9P2_JuanIdiaquez_JorgeRamirez extends javax.swing.JFrame {
+
+    int progress = 0;
 
     /**
      * Creates new form Lab9P2_JuanIdiaquez_JorgeRamirez
@@ -225,11 +231,8 @@ public class Lab9P2_JuanIdiaquez_JorgeRamirez extends javax.swing.JFrame {
                                         .addComponent(PostalCode))
                                     .addComponent(Country, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CustomerID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Category, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(CustomerID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Category, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -420,6 +423,11 @@ public class Lab9P2_JuanIdiaquez_JorgeRamirez extends javax.swing.JFrame {
         jScrollPane2.setViewportView(TablaRegistro);
 
         jToggleButton7.setText("Eliminar Registro");
+        jToggleButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButton7MouseClicked(evt);
+            }
+        });
 
         jToggleButton8.setText("Update Table");
         jToggleButton8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -490,197 +498,419 @@ public class Lab9P2_JuanIdiaquez_JorgeRamirez extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton5ActionPerformed
 
     private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
-        Dba db = new Dba("./Database2.accdb");
+//        Dba db = new Dba("./DATA.mdb");
+//        db.conectar();
+//
+//        String orderID = OrderID.getText();
+//        OrderID.setText(" ");
+//
+//        String orderD = OrderDate.getText();
+//        OrderDate.setText(" ");
+//
+//        String shipD = ShipDate.getText();
+//        ShipDate.setText(" ");
+//
+//        String shipM = ShipMode.getText();
+//        ShipMode.setText(" ");
+//
+//        String customerID = CustomerID.getText();
+//        CustomerID.setText(" ");
+//
+//        String customerN = CustomerName.getText();
+//        CustomerName.setText(" ");
+//
+//        String segment = Segment.getText();
+//        Segment.setText(" ");
+//
+//        String country = Country.getText();
+//        Country.setText(" ");
+//
+//        String city = City.getText();
+//        City.setText(" ");
+//
+//        String state = State.getText();
+//        State.setText(" ");
+//
+//        String postal = PostalCode.getText();
+//        PostalCode.setText(" ");
+//
+//        String region = Region.getText();
+//        Region.setText(" ");
+//
+//        String productID = ProductID.getText();
+//        ProductID.setText(" ");
+//
+//        String category = Category.getText();
+//        Category.setText(" ");
+//
+//        String Scategory = SubCategory.getText();
+//        SubCategory.setText(" ");
+//
+//        String productn = ProductName.getText();
+//        ProductName.setText(" ");
+//
+//        String sales = Sales.getText();
+//        Sales.setText(" ");
+//
+//        String quantity = Quantity.getText();
+//        Quantity.setText(" ");
+//
+//        String discount = Discount.getText();
+//        Discount.setText(" ");
+//
+//        String profit = Profit.getText();
+//        Profit.setText(" ");
+//        
+//        int ID=0;
+//        
+//        try {
+//            JOptionPane.showMessageDialog(null, "Proceso completado");
+//            db.query.execute("INSERT INTO TenRecord "
+//                    + "([Row ID], [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], Segment, Country, City, State, [Postal Code], Region, [Product ID], Category, [Sub-Category], [Product Name], Sales, Quantity, Discount, Profit)"
+//                    + " VALUES ('" + ID + "', '" + orderID + "', '" + orderD + "', '" + shipD + "', '" + shipM + "', '" + customerID + "', '" + customerN + "', '" + segment + "', '" + country + "', '" + city + "', '" + state + "', '" + postal + "', '" + region + "', '" + productID + "', '" + category + "', '" + Scategory + "', '" + productn + "', '" + sales + "', '" + quantity + "', '" + discount + "', '" + profit + "')");
+//
+//            db.commit();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        db.desconectar();
+ Dba db = new Dba("./DATA.mdb");
         db.conectar();
+        UIManager.put("nimbusOrange", Color.YELLOW);
+        Timer timer = new Timer(45, new ActionListener() {
 
-        String orderID = OrderID.getText();
-        OrderID.setText(" ");
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= 101) {
+                    jProgressBar1.setValue(progress);
 
-        String orderD = OrderDate.getText();
-        OrderDate.setText(" ");
+                    progress++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    if (progress > 101) {
+                       String orderID = OrderID.getText();
+                        OrderID.setText(" ");
 
-        String shipD = ShipDate.getText();
-        ShipDate.setText(" ");
-        
-        String shipM = ShipMode.getText();
-        ShipMode.setText(" ");
-       
-        String customerID = CustomerID.getText();
-        CustomerID.setText(" ");
-        
-        String customerN = CustomerName.getText();
-        CustomerName.setText(" ");
-        
-        String segment = Segment.getText();
-        Segment.setText(" ");
-        
-        String country = Country.getText();
-        Country.setText(" ");
-        
-        String city = City.getText();
-        City.setText(" ");
-        
-        String state = State.getText();
-        State.setText(" ");
-            
-        String postal = PostalCode.getText();
-        PostalCode.setText(" ");
-        
-        String region = Region.getText();
-        Region.setText(" ");
-        
-        String productID = ProductID.getText();
-        ProductID.setText(" ");
+                        String orderD = OrderDate.getText();
+                        OrderDate.setText(" ");
 
-        String category = Category.getText();
-        Category.setText(" ");
-        
-        String Scategory = SubCategory.getText();
-        SubCategory.setText(" ");
-        
-        String productn = ProductName.getText();
-        ProductName.setText(" ");
+                        String shipD = ShipDate.getText();
+                        ShipDate.setText(" ");
 
-        String sales = Sales.getText();
-        Sales.setText(" ");
+                        String shipM = ShipMode.getText();
+                        ShipMode.setText(" ");
 
-        String quantity = Quantity.getText();
-        Quantity.setText(" ");
+                        String customerID = CustomerID.getText();
+                        CustomerID.setText(" ");
 
-        String discount = Discount.getText();
-        Discount.setText(" ");
+                        String customerN = CustomerName.getText();
+                        CustomerName.setText(" ");
 
-        String profit = Profit.getText();
-        Profit.setText(" ");
+                        String segment = Segment.getText();
+                        Segment.setText(" ");
 
-        try {
-            db.query.execute("INSERT INTO TenRecord "
-                    + "([Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], Segment, Country, City, State, [Postal Code], Region, [Product ID], Category, [Product Name], Sales, Quantity, Discount, Profit)"
-                    + " VALUES ('" + orderID + "', '" + orderD + "', '" + shipD + "', '" + shipM + "', '" + customerID + "', '" + customerN + "', '" + segment + "', '" + country +"', '" + city + "', '" + state + "', '" + postal + "', '" + region + "', '" + productID + "', '" + category + "', '" + Scategory + "', '" + productn + "', '" + sales + "', '" + quantity + "', '" + discount + "', '" + profit + "')");
+                        String country = Country.getText();
+                        Country.setText(" ");
 
-            db.commit();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-     
+                        String city = City.getText();
+                        City.setText(" ");
+
+                        String state = State.getText();
+                        State.setText(" ");
+
+                        String postal = PostalCode.getText();
+                        PostalCode.setText(" ");
+
+                        String region = Region.getText();
+                        Region.setText(" ");
+
+                        String productID = ProductID.getText();
+                        ProductID.setText(" ");
+
+                        String category = Category.getText();
+                        Category.setText(" ");
+
+                        String Scategory = SubCategory.getText();
+                        SubCategory.setText(" ");
+
+                        String productn = ProductName.getText();
+                        ProductName.setText(" ");
+
+                        String sales = Sales.getText();
+                        Sales.setText(" ");
+
+                        String quantity = Quantity.getText();
+                        Quantity.setText(" ");
+
+                        String discount = Discount.getText();
+                        Discount.setText(" ");
+
+                        String profit = Profit.getText();
+                        Profit.setText(" ");
+
+                        int ID = 0;
+
+                        try {
+                            JOptionPane.showMessageDialog(null, "Proceso completado");
+                            db.query.execute("INSERT INTO TenRecord "
+                                    + "([Row ID], [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], Segment, Country, City, State, [Postal Code], Region, [Product ID], Category, [Sub-Category], [Product Name], Sales, Quantity, Discount, Profit)"
+                                    + " VALUES ('" + ID + "', '" + orderID + "', '" + orderD + "', '" + shipD + "', '" + shipM + "', '" + customerID + "', '" + customerN + "', '" + segment + "', '" + country + "', '" + city + "', '" + state + "', '" + postal + "', '" + region + "', '" + productID + "', '" + category + "', '" + Scategory + "', '" + productn + "', '" + sales + "', '" + quantity + "', '" + discount + "', '" + profit + "')");
+
+                            db.commit();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        db.desconectar();
+                    }
+
+                }
+            }
+
+        });
+
+        timer.start();
     }//GEN-LAST:event_jToggleButton1MouseClicked
 
     private void jToggleButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton5MouseClicked
-        Barra x= new Barra(jProgressBar1);
-        UIManager.put("nimbusOrange", Color.green);
-        x.setTiempo(4);
-        x.start();
-        if (!x.isAlive()) {
-        Dba db = new Dba("./Database2.accdb");
+        Dba db = new Dba("./DATA.mdb");
         db.conectar();
-        try {
-            db.query.execute("select [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID] from TenRecord");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-                String a= rs.getString("Order ID");
-                String b= rs.getString("Order Date");
-                String c= rs.getString("Ship Date");
-                String d= rs.getString("Ship Mode");
-                String e= rs.getString("Customer ID");
-                String est= "Order ID: "+a +"\n"+"Order Date: "+b+"\n"+"Ship Date: "+c+"\n"+"Ship Mode: "+d+"\n"+"Customer ID: "+e;
-                AreaTListar.setText(est);
+        UIManager.put("nimbusOrange", Color.green);
+        Timer timer = new Timer(30, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= 101) {
+                    jProgressBar1.setValue(progress);
+
+                    progress++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    if (progress > 101) {
+                        try {
+                            JOptionPane.showMessageDialog(null, "Proceso completado");
+                            db.query.execute("select [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID] from TenRecord");
+                            ResultSet rs = db.query.getResultSet();
+                            while (rs.next()) {
+                                String a = rs.getString("Order ID");
+                                String b = rs.getString("Order Date");
+                                String c = rs.getString("Ship Date");
+                                String d = rs.getString("Ship Mode");
+                                String z = rs.getString("Customer ID");
+                                String est = "Order ID: " + a + "\n" + "Order Date: " + b + "\n" + "Ship Date: " + c + "\n" + "Ship Mode: " + d + "\n" + "Customer ID: " + z;
+                                AreaTListar.setText(est);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        db.desconectar();
+                    }
+
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-        }
+
+        });
+
+        timer.start();
     }//GEN-LAST:event_jToggleButton5MouseClicked
 
     private void jToggleButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton8MouseClicked
-//         Dba db = new Dba("./Database2.mdb");
-//        db.conectar();
-//             try {
-//                 db.query.execute("select Row ID, Order ID, Order Date, Customer ID, Country, City, Product ID, Sales");
-//                 ResultSet rs = db.query.getResultSet();
-//                 Object[] sql;
-//                 while (rs.next()) {
-//                     for (int i = 0; i < 8; i++) {
-//                         sql= {""} ;
-//                     }
-//                     
-//                 }
-//             } catch (SQLException ex) {
-//                 Logger.getLogger(Lab9P2_JuanIdiaquez_JorgeRamirez.class.getName()).log(Level.SEVERE, null, ex);
-//             }
+DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
+        Dba db = new Dba("./DATA.mdb");
+
+        db.conectar();
+
+        try {
+            db.query.execute("select [Row ID], [Order ID], [Order Date], [Customer ID], Country, City, [Product ID], Sales from TenRecord");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                Object[] var = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)};
+                modelo.addRow(var);
+            }
+            JOptionPane.showMessageDialog(null, "Proceso completado");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        db.desconectar();
     }//GEN-LAST:event_jToggleButton8MouseClicked
 
     private void jToggleButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton6MouseClicked
         AreaTListar.setText("");
+        jProgressBar1.setValue(0);
     }//GEN-LAST:event_jToggleButton6MouseClicked
 
     private void jToggleButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton2MouseClicked
-        Dba db = new Dba("./Database2.accdb");
+       Dba db = new Dba("./DATA.mdb");
         db.conectar();
-        try {
-            db.query.execute("select [Order ID], [Product ID], Sales, Quantity, Discount, Profit from TenRecord");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-                String a= rs.getString("Order ID");
-                String b= rs.getString("Product ID");
-                String c= rs.getString("Sales");
-                String d= rs.getString("Quantity");
-                String e= rs.getString("Discount");
-                String f= rs.getString("Profit");
-                String est= "Order ID: "+a +"\n"+"Product ID: "+b+"\n"+"Sales: "+c+"\n"+"Quantity: "+d+"\n"+"Discount: "+e+"\n"+"Profit: "+f;
-                AreaTListar.setText(est);
+        UIManager.put("nimbusOrange", Color.ORANGE);
+        final Timer timer = new Timer(40, new ActionListener() {
+            int progress = 0;
+            int maxProgress = 5000;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= maxProgress) {
+                    jProgressBar1.setValue(progress * 100 / maxProgress);
+                    progress += 50;
+                } else {
+                    ((Timer) e.getSource()).stop();
+
+                    try {
+                        JOptionPane.showMessageDialog(null, "Proceso completado");
+                        db.query.execute("select [Order ID], [Product ID], [Ship Date], Sales, Quantity, Discount, Profit   from TenRecord");
+                        ResultSet rs = db.query.getResultSet();
+                        while (rs.next()) {
+                            String a = rs.getString("Order ID");
+                            String b = rs.getString("Product ID");
+                            String c = rs.getString("Sales");
+                            String d = rs.getString("Quantity");
+                            String z = rs.getString("Discount");
+                            String f = rs.getString("Profit");
+                            String est = "Order ID: " + a + "\n" + "Product ID: " + b + "\n" + "Sales: " + c + "\n" + "Quantity: " + d + "\n" + "Discount: " + z + "\n" + "Profit: " + f;
+                            AreaTListar.setText(est);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    db.desconectar();
+
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
+        });
+        timer.start();
     }//GEN-LAST:event_jToggleButton2MouseClicked
 
     private void jToggleButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton3MouseClicked
-      Dba db = new Dba("./Database2.accdb");
+        Dba db = new Dba("./DATA.mdb");
+        UIManager.put("nimbusOrange", Color.RED);
         db.conectar();
-        try {
-            db.query.execute("select [Customer ID], [Customer Name], Segment, Country, Discount, City, State, [Postal Code], Region from TenRecord");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-               String a= rs.getString("Customer ID");
-                String b= rs.getString("Customer Name");
-                String c= rs.getString("Segment");
-                String d= rs.getString("Country");
-                String e= rs.getString("Discount");
-                String f= rs.getString("City");
-                String g= rs.getString("State");
-                String h= rs.getString("Postal Code");
-                String est= "Customer ID: "+a +"\n"+"Customer Name: "+b+"\n"+"Segment: "+c+"\n"+"Country: "+d+"\n"+"Discount: "+e+"\n"+"City: "+f+"\n"+"State: "+g+"\n"+"Postal Code: "+h;
-                AreaTListar.setText(est);
+
+        final Timer timer = new Timer(45, new ActionListener() {
+            int progress = 0;
+            int maxProgress = 5000;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= maxProgress) {
+                    jProgressBar1.setValue(progress * 100 / maxProgress);
+                    progress += 50;
+                } else {
+                    ((Timer) e.getSource()).stop();
+
+                    try {
+                        JOptionPane.showMessageDialog(null, "Proceso completado");
+                        db.query.execute("select [Customer ID], [Customer Name], Segment, Country, City, State, [Postal Code], Region from " + "     TenRecord");
+                        ResultSet rs = db.query.getResultSet();
+
+                        while (rs.next()) {
+                            String a = rs.getString("Customer ID");
+                            String b = rs.getString("Customer Name");
+                            String c = rs.getString("Segment");
+                            String d = rs.getString("Country");
+                            String z = rs.getString("City");
+                            String f = rs.getString("State");
+                            String h = rs.getString("Postal Code");
+                            String g = rs.getString("Region");
+                            String est = "Customer ID: " + a + "\n" + "Customer Name: " + b + "\n" + "Segment: " + c + "\n" + "Country: " + d + "\n" + "City: " + z + "\n" + "State: " + f + "\n" + "Postal Code : " + h + "\n" + "Region: " + g + "\n";
+
+                            AreaTListar.setText(est);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    db.desconectar();
+
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
+        });
+        timer.start();
     }//GEN-LAST:event_jToggleButton3MouseClicked
 
     private void jToggleButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton4MouseClicked
-         Dba db = new Dba("./Database2.accdb");
+       Dba db = new Dba("./DATA.mdb");
+       UIManager.put("nimbusOrange", Color.BLUE);
         db.conectar();
-        try {
-            db.query.execute("select [Product ID], Category, [Sub-Category], [Ship Mode], [Customer ID] from TenRecord");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-                String a= rs.getString("Product ID");
-                String b= rs.getString("Category");
-                String c= rs.getString("Sub-Category");
-                String d= rs.getString("Ship Mode");
-                String e= rs.getString("Customer ID");
-                String est= "Product ID: "+a +"\n"+"Category: "+b+"\n"+"Sub-Category: "+c+"\n"+"Ship Mode: "+d+"\n"+"Customer ID: "+e;
-                AreaTListar.setText(est);
+
+        final Timer timer = new Timer(25, new ActionListener() {
+            int progress = 0;
+            int maxProgress = 5000;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= maxProgress) {
+                    jProgressBar1.setValue(progress * 100 / maxProgress);
+                    progress += 50;
+                } else {
+                    ((Timer) e.getSource()).stop();
+
+                    try {
+                        JOptionPane.showMessageDialog(null, "Proceso completado");
+                        db.query.execute("select [Product ID], Category, [Sub-Category], [Product Name] from " + "     TenRecord");
+                        ResultSet rs = db.query.getResultSet();
+
+                        while (rs.next()) {
+                            String a = rs.getString("Product ID");
+                            String b = rs.getString("Category");
+                            String c = rs.getString("Sub-Category");
+                            String d = rs.getString("Product Name");
+
+                            String rowText = "[Product ID]: " + a + "\n" + "Category: " + b + "\n" + "[Sub-Category]: " + c + "\n" + "[Product Name]: " + d + "\n";
+
+                            AreaTListar.setText(rowText);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    db.desconectar();
+
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
-        db.desconectar();
+        );
+        timer.start();
     }//GEN-LAST:event_jToggleButton4MouseClicked
+
+    private void jToggleButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton7MouseClicked
+       Dba db = new Dba("./DATA.mdb");
+        db.conectar();
+        UIManager.put("nimbusOrange", Color.green);
+        Timer timer = new Timer(30, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (progress <= 101) {
+                    jProgressBar1.setValue(progress);
+
+                    progress++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+                    if (progress > 101) {
+                        try {
+                            JOptionPane.showMessageDialog(null, "Proceso completado");
+                            db.query.execute("select [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID] from TenRecord");
+                            ResultSet rs = db.query.getResultSet();
+                            while (rs.next()) {
+                                String a = rs.getString("Order ID");
+                                String b = rs.getString("Order Date");
+                                String c = rs.getString("Ship Date");
+                                String d = rs.getString("Ship Mode");
+                                String z = rs.getString("Customer ID");
+                                String est = "Order ID: " + a + "\n" + "Order Date: " + b + "\n" + "Ship Date: " + c + "\n" + "Ship Mode: " + d + "\n" + "Customer ID: " + z;
+                                AreaTListar.setText(est);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        db.desconectar();
+                    }
+
+                }
+            }
+
+        });
+
+        timer.start();
+    }//GEN-LAST:event_jToggleButton7MouseClicked
 
     /**
      * @param args the command line arguments
