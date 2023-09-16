@@ -714,7 +714,7 @@ public class Lab9P2_JuanIdiaquez_JorgeRamirez extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton5MouseClicked
 
     private void jToggleButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton8MouseClicked
-DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
+DefaultTableModel m = (DefaultTableModel) TablaRegistro.getModel();
         Dba db = new Dba("./DATA.mdb");
 
         db.conectar();
@@ -724,7 +724,7 @@ DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
             ResultSet rs = db.query.getResultSet();
             while (rs.next()) {
                 Object[] var = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)};
-                modelo.addRow(var);
+                m.addRow(var);
             }
             JOptionPane.showMessageDialog(null, "Proceso completado");
         } catch (SQLException ex) {
@@ -873,8 +873,9 @@ DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
     private void jToggleButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton7MouseClicked
        Dba db = new Dba("./DATA.mdb");
         db.conectar();
-        UIManager.put("nimbusOrange", Color.green);
-        Timer timer = new Timer(30, new ActionListener() {
+        int banderita= Integer.parseInt(JOptionPane.showInputDialog(null, "Marque el numero de la row a eliminar"));
+        UIManager.put("nimbusOrange", Color.MAGENTA);
+        Timer timer = new Timer(40, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -886,18 +887,9 @@ DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
                     ((Timer) e.getSource()).stop();
                     if (progress > 101) {
                         try {
+                            DefaultTableModel m = (DefaultTableModel) TablaRegistro.getModel();
+                            m.removeRow(banderita);
                             JOptionPane.showMessageDialog(null, "Proceso completado");
-                            db.query.execute("select [Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID] from TenRecord");
-                            ResultSet rs = db.query.getResultSet();
-                            while (rs.next()) {
-                                String a = rs.getString("Order ID");
-                                String b = rs.getString("Order Date");
-                                String c = rs.getString("Ship Date");
-                                String d = rs.getString("Ship Mode");
-                                String z = rs.getString("Customer ID");
-                                String est = "Order ID: " + a + "\n" + "Order Date: " + b + "\n" + "Ship Date: " + c + "\n" + "Ship Mode: " + d + "\n" + "Customer ID: " + z;
-                                AreaTListar.setText(est);
-                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
